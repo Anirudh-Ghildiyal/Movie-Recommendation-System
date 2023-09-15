@@ -129,8 +129,10 @@ def recommend(movie):
 recommend("Batman Begins")
 
 import pickle
+import bz2
 pickle.dump(new_df.to_dict(), open("movie_dict.pkl","wb"))
-pickle.dump(similarity, open("similarity.pkl","wb"))
+with bz2.BZ2File('similarity.pkl.bz2', 'wb') as f:
+    pickle.dump(similarity, f)
 
 """# Website Launch Code"""
 
@@ -141,6 +143,7 @@ pickle.dump(similarity, open("similarity.pkl","wb"))
 # import streamlit as st
 # import pandas as pd
 # import pickle
+# import bz2
 # import requests
 # 
 # def fetch_poster(movie_id):
@@ -166,7 +169,9 @@ pickle.dump(similarity, open("similarity.pkl","wb"))
 # movies_dict = pickle.load(open("movie_dict.pkl","rb"))
 # movies = pd.DataFrame(movies_dict)
 # 
-# similarity = pickle.load(open("similarity.pkl","rb"))
+# with bz2.BZ2File('similarity.pkl.bz2', 'rb') as f:
+#     similarity = pickle.load(f)
+# 
 # selected_movie_name = st.selectbox("Enter your movie",movies["title"].values)
 # 
 # if st.button("Recommend Movie"):
@@ -188,8 +193,6 @@ pickle.dump(similarity, open("similarity.pkl","wb"))
 #     st.text(names[4])
 #     st.image(posters[4], use_column_width=True)
 # 
-# 
-# st.markdown("<h1 style='text-align: center; color: #0000FF;'>Movie Recommendation System</h1>", unsafe_allow_html=True)
 # st.markdown(
 #     """
 #     <style>

@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pickle
+import bz2
 import requests
 
 def fetch_poster(movie_id):
@@ -26,7 +27,9 @@ st.title("Movie Recommendation System")
 movies_dict = pickle.load(open("movie_dict.pkl","rb"))
 movies = pd.DataFrame(movies_dict)
 
-similarity = pickle.load(open("similarity.pkl","rb"))
+with bz2.BZ2File('similarity.pkl.bz2', 'rb') as f:
+    similarity = pickle.load(f)
+
 selected_movie_name = st.selectbox("Enter your movie",movies["title"].values)
 
 if st.button("Recommend Movie"):
@@ -47,3 +50,24 @@ if st.button("Recommend Movie"):
   with col5:
     st.text(names[4])
     st.image(posters[4], use_column_width=True)
+
+st.markdown(
+    """
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+st.markdown(
+    """
+    <style>
+        .stButton {
+            margin: 10px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
